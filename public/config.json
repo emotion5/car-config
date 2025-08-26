@@ -1,6 +1,6 @@
 {
-  "modelPath": "/models/urus.glb",
-  "modelScale": 100,
+  "modelPath": "/models/bmw.glb",
+  "modelScale": 1,
   "cameraPosition": [5, 3, 5],
   "backgroundColor": "#f0f0f0"
 }

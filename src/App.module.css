@@ -1,41 +1,58 @@
 .container {
   width: 100vw;
   height: 100vh;
-  display: flex;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  /* 스튜디오 스타일 그라데이션 배경 - 어두운 톤 */
+  background: linear-gradient(180deg, 
+    #000000 0%,     /* 상단: 검정색 */
+    #0f0f0f 30%,    /* 중간: 진한 회색 */
+    #1a1a1a 70%,    /* 하단: 어두운 회색 */
+    #252525 100%    /* 최하단: 약간 밝은 어두운 회색 */
+  );
 }
 
 .canvasWrapper {
-  flex: 1;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .controls {
-  width: 420px;
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 380px;
+  max-height: calc(100vh - 40px);
+  background: rgba(20, 20, 20, 0.9);  /* 다크 반투명 배경 */
+  backdrop-filter: blur(10px);        /* 블러 효과 */
+  border-radius: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .controls h2 {
   margin: 0;
   padding: 1.5rem 2rem 0.5rem;
-  color: #333;
-  font-size: 1.5rem;
-  border-bottom: 1px solid #eee;
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .controls p {
-  color: #666;
+  color: #cccccc;
   font-size: 0.9rem;
 }
 
 .modelPath {
   padding: 0.5rem 2rem 1rem;
-  color: #888;
-  font-size: 0.85rem;
-  border-bottom: 1px solid #eee;
+  color: #888888;
+  font-size: 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin: 0;
 }
 
@@ -48,4 +65,22 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   font-size: 1.2rem;
+}
+
+.contactButton {
+  margin: 0;
+  padding: 0.75rem 1.5rem;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  width: 100%;
+}
+
+.contactButton:hover {
+  background: #ff6666;
 }

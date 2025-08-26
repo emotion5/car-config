@@ -63,6 +63,7 @@ function App() {
         <h2>GLB 모델 컨피규레이터</h2>
         <p className={styles.modelPath}>모델: {config.modelPath}</p>
         <MaterialList materials={materials} />
+        <button className={styles.contactButton}>문의하기</button>
       </div>
     </div>
   )

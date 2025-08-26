@@ -1,4 +1,4 @@
-import { OrbitControls, Environment } from '@react-three/drei'
+import { OrbitControls, Environment, useTexture } from '@react-three/drei'
 import ModelViewer from './ModelViewer'
 import * as THREE from 'three'
 
@@ -6,6 +6,28 @@ interface SceneProps {
   modelPath: string
   modelScale: number
   onMaterialsFound: (materials: Record<string, THREE.Material>) => void
+}
+
+function GroundPlane() {
+  const soilTexture = useTexture('/textures/soil.png')
+  
+  // 텍스처 설정
+  soilTexture.wrapS = soilTexture.wrapT = THREE.RepeatWrapping
+  soilTexture.repeat.set(8, 8) // 8x8 반복
+  
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
+      <circleGeometry args={[30, 64]} />
+      <meshStandardMaterial
+        map={soilTexture}
+        transparent
+        opacity={0.05}  // 조금 더 진하게
+        roughness={0.8}
+        metalness={0}
+        color="#808080"  // 회색 틴트로 더 어둡게
+      />
+    </mesh>
+  )
 }
 
 function Scene({ modelPath, modelScale, onMaterialsFound }: SceneProps) {
@@ -38,6 +60,9 @@ function Scene({ modelPath, modelScale, onMaterialsFound }: SceneProps) {
         maxDistance={20}
       />
       
+      {/* 바닥 텍스처 */}
+      <GroundPlane />
+      
       {/* 3D 모델 */}
       <ModelViewer 
         modelPath={modelPath}
@@ -45,8 +70,7 @@ function Scene({ modelPath, modelScale, onMaterialsFound }: SceneProps) {
         onMaterialsFound={onMaterialsFound}
       />
       
-      {/* 바닥 그리드 (선택사항) */}
-      <gridHelper args={[10, 10]} />
+      {/* 배경은 CSS 그라데이션 + 바닥 텍스처 조합 */}
     </>
   )
 }

@@ -1,40 +1,105 @@
 # CLAUDE.md
 
-이 파일은 Claude Code (claude.ai/code)가 이 저장소의 코드를 작업할 때 참고할 가이드입니다.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 프로젝트 개요
-React + TypeScript + Vite 기반의 애플리케이션으로, Three.js와 React Three Fiber를 사용한 3D 기능을 포함합니다. 프로젝트명으로 보아 자동차 구성 도구로 보입니다.
+## Project Overview
 
-## 개발 명령어
+This is a universal GLB 3D model configurator built with React, TypeScript, and Three.js/React Three Fiber. The application allows users to load any GLB file and modify individual material colors in real-time. It features a professional dark-themed UI inspired by automotive configurators.
+
+## Development Commands
+
 ```bash
-npm run dev        # HMR이 적용된 개발 서버 시작
-npm run build      # 타입 체크 및 프로덕션 빌드
-npm run lint       # ESLint 실행
-npm run preview    # 프로덕션 빌드 로컬 프리뷰
+# Start development server
+npm run dev
+
+# Build for production  
+npm run build
+
+# Run linting
+npm run lint
+
+# Preview production build
+npm run preview
 ```
 
-## 주요 의존성
-- **React Three Fiber** (`@react-three/fiber`): Three.js용 React 렌더러
-- **Drei** (`@react-three/drei`): React Three Fiber 헬퍼 라이브러리
-- **Three.js**: 3D 그래픽 라이브러리
-- **Vite**: 빌드 도구 및 개발 서버
-- **TypeScript**: 타입 체킹
+## Architecture
 
-## 프로젝트 구조
-- `/src` - 소스 코드 디렉토리
-  - `main.tsx` - 애플리케이션 진입점
-  - `App.tsx` - 메인 React 컴포넌트
-- `/public` - 정적 자산
-- `vite.config.ts` - Vite 설정
-- `tsconfig.json` - TypeScript 설정 (프로젝트 참조 사용)
-- `eslint.config.js` - ESLint 설정
+### Core Configuration System
+- **`/public/config.json`**: Dynamic configuration for model loading
+  - `modelPath`: Path to GLB file in `/public/models/`
+  - `modelScale`: Scaling factor for the 3D model
+  - `cameraPosition`: Initial camera position [x, y, z]
+  - `backgroundColor`: UI background color (currently unused)
 
-## TypeScript 설정
-프로젝트 참조를 사용한 TypeScript 설정:
-- `tsconfig.app.json` - 애플리케이션 코드 설정
-- `tsconfig.node.json` - Node/빌드 도구 설정
+### Component Architecture
+- **`App.tsx`**: Root component that loads config and manages global state
+- **`Scene.tsx`**: 3D scene setup with lighting, controls, and environment
+- **`ModelViewer.tsx`**: GLB loader with automatic material discovery
+- **`MaterialList.tsx`**: UI component for material selection and color changes
 
-## 빌드 시스템
-- Vite를 사용한 번들링 및 개발
-- Vite 빌드 전에 TypeScript 컴파일 수행 (`tsc -b && vite build`)
-- ESM 모듈 사용 (package.json에 `"type": "module"`)
+### 3D Rendering Pipeline
+1. **Model Loading**: Uses `@react-three/drei` `useGLTF` hook
+2. **Material Discovery**: Traverses entire scene graph to collect all materials
+3. **PBR Rendering**: Configured for realistic physically-based rendering
+   - ACESFilmicToneMapping
+   - SRGB color space
+   - Environment mapping with "studio" preset
+4. **Material Updates**: Real-time color changes using Three.js `needsUpdate` pattern
+
+### Key Technical Patterns
+
+**Material Collection**:
+```typescript
+scene.traverse((child) => {
+  if (child instanceof THREE.Mesh) {
+    // Collect both single materials and material arrays
+    // Handle unnamed materials with fallback naming
+  }
+})
+```
+
+**Real-time Color Updates**:
+```typescript
+material.color = new THREE.Color(hexColor)
+material.needsUpdate = true
+```
+
+**Canvas Configuration**:
+- High-performance WebGL settings
+- Proper tone mapping for realistic materials
+- OrbitControls for interactive camera movement
+
+### Styling System
+- CSS Modules for component-scoped styling
+- Dark theme with glass morphism effects
+- Professional floating control panel design
+- Hidden scrollbars with maintained scroll functionality
+
+## File Structure
+```
+src/
+├── components/
+│   ├── Scene.tsx           # 3D scene setup
+│   ├── ModelViewer.tsx     # GLB loading & material discovery
+│   ├── MaterialList.tsx    # Material UI controls
+│   └── *.module.css        # Component styles
+├── App.tsx                 # Root component
+└── App.module.css         # Main layout styles
+public/
+├── config.json            # Dynamic model configuration
+├── models/                # GLB files storage
+└── textures/              # Ground plane textures
+```
+
+## Adding New Models
+1. Place GLB files in `/public/models/`
+2. Update `/public/config.json` with new `modelPath`
+3. Adjust `modelScale` and `cameraPosition` as needed
+4. The application automatically discovers all materials in any GLB file
+
+## Material System
+The application automatically handles:
+- MeshStandardMaterial and MeshPhysicalMaterial types
+- Single materials and material arrays per mesh
+- Unnamed materials (auto-generates names)
+- Real-time color updates with proper Three.js refresh patterns
