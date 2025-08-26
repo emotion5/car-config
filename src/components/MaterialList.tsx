@@ -54,9 +54,6 @@ function MaterialList({ materials }: MaterialListProps) {
                 >
                   {displayName}
                 </span>
-                <div className={styles.colorPreview} 
-                  style={{ backgroundColor: colors[name] || getMaterialColor(material) }}
-                />
               </div>
               <input
                 type="color"
