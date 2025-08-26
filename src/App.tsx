@@ -6,7 +6,8 @@ import MaterialList from './components/MaterialList'
 import styles from './App.module.css'
 
 interface Config {
-  modelPath: string
+  models: { name: string, path: string }[]
+  selectedModel: number
   modelScale: number
   cameraPosition: [number, number, number]
   backgroundColor: string
@@ -14,6 +15,7 @@ interface Config {
 
 function App() {
   const [config, setConfig] = useState<Config | null>(null)
+  const [selectedModelIndex, setSelectedModelIndex] = useState<number>(0)
   const [materials, setMaterials] = useState<Record<string, THREE.Material>>({})
 
   useEffect(() => {
@@ -23,6 +25,7 @@ function App() {
       .then(data => {
         console.log('Config loaded:', data)
         setConfig(data)
+        setSelectedModelIndex(data.selectedModel || 0)
       })
       .catch(err => console.error('Failed to load config:', err))
   }, [])
@@ -32,9 +35,16 @@ function App() {
     setMaterials(foundMaterials)
   }
 
+  const handleModelChange = (index: number) => {
+    setSelectedModelIndex(index)
+    setMaterials({}) // 새 모델로 변경할 때 머티리얼 리스트 초기화
+  }
+
   if (!config) {
     return <div className={styles.loading}>설정 파일 로딩 중...</div>
   }
+
+  const currentModel = config.models[selectedModelIndex]
 
   return (
     <div className={styles.container}>
@@ -52,16 +62,33 @@ function App() {
         >
           <Suspense fallback={null}>
             <Scene 
-              modelPath={config.modelPath}
+              modelPath={currentModel.path}
               modelScale={config.modelScale}
               onMaterialsFound={handleMaterialsFound}
             />
           </Suspense>
         </Canvas>
       </div>
+      <div className={styles.logo}>
+        <h1 className={styles.logoText}>Uable Configurator</h1>
+      </div>
       <div className={styles.controls}>
-        <h2>GLB 모델 컨피규레이터</h2>
-        <p className={styles.modelPath}>모델: {config.modelPath}</p>
+        {config.models.length > 1 && (
+          <div className={styles.modelSelector}>
+            <label className={styles.selectorLabel}>모델 선택:</label>
+            <select 
+              value={selectedModelIndex}
+              onChange={(e) => handleModelChange(Number(e.target.value))}
+              className={styles.modelSelect}
+            >
+              {config.models.map((model, index) => (
+                <option key={index} value={index}>
+                  {model.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <MaterialList materials={materials} />
         <button className={styles.contactButton}>문의하기</button>
       </div>

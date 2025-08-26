@@ -92,3 +92,63 @@
 .contactButton:hover {
   background: #ff6666;
 }
+
+.logo {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  z-index: 10;
+}
+
+.logoText {
+  margin: 0;
+  color: #ffffff;
+  font-family: 'Alfa Slab One', serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .logo {
+    top: 20px;
+    left: 20px;
+  }
+  
+  .logoText {
+    font-size: 1.4rem;
+  }
+}
+
+.modelSelector {
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.selectorLabel {
+  display: block;
+  color: #cccccc;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.modelSelect {
+  width: 100%;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: 'Inter Medium', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.9rem;
+}
+
+.modelSelect:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.modelSelect option {
+  background: #2a2a2a;
+  color: #ffffff;
+}
