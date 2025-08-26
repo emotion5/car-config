@@ -2,39 +2,57 @@ import { useGLTF } from '@react-three/drei'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-function ModelViewer() {
-  const { scene, nodes, materials } = useGLTF('/models/urus.glb')
+interface ModelViewerProps {
+  modelPath: string
+  modelScale: number
+  onMaterialsFound: (materials: Record<string, THREE.Material>) => void
+}
+
+function ModelViewer({ modelPath, modelScale, onMaterialsFound }: ModelViewerProps) {
+  const { scene } = useGLTF(modelPath)
   const modelRef = useRef<THREE.Group>(null)
 
   useEffect(() => {
-    // 모델 로드 시 구조 확인 (디버깅용)
-    console.log('Model structure:', { nodes, materials })
+    const materialsMap: Record<string, THREE.Material> = {}
     
-    // 모델 내부의 모든 메시 탐색
+    // 모델 내부의 모든 메시 탐색하여 머티리얼 수집
     scene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
-        console.log('Mesh found:', child.name, child.material)
+        const mesh = child as THREE.Mesh
         
         // 그림자 설정
-        child.castShadow = true
-        child.receiveShadow = true
+        mesh.castShadow = true
+        mesh.receiveShadow = true
+        
+        // 머티리얼 수집 (중복 제거)
+        if (mesh.material) {
+          if (Array.isArray(mesh.material)) {
+            mesh.material.forEach((mat, index) => {
+              const matName = mat.name || `Material_${mesh.name}_${index}`
+              materialsMap[matName] = mat
+            })
+          } else {
+            const matName = mesh.material.name || `Material_${mesh.name}`
+            materialsMap[matName] = mesh.material
+          }
+        }
       }
     })
-  }, [scene, nodes, materials])
+    
+    console.log('Found materials:', Object.keys(materialsMap))
+    onMaterialsFound(materialsMap)
+  }, [scene, onMaterialsFound])
 
   return (
     <group ref={modelRef}>
       <primitive 
         object={scene} 
-        scale={[100, 100, 100]}
+        scale={[modelScale, modelScale, modelScale]}
         position={[0, 0, 0]}
         rotation={[0, 0, 0]}
       />
     </group>
   )
 }
-
-// GLB 파일 프리로드
-useGLTF.preload('/models/urus.glb')
 
 export default ModelViewer

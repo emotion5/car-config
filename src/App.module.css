@@ -11,20 +11,41 @@
 }
 
 .controls {
-  width: 300px;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 2rem;
+  width: 420px;
+  background: rgba(255, 255, 255, 0.98);
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .controls h2 {
-  margin: 0 0 1rem 0;
+  margin: 0;
+  padding: 1.5rem 2rem 0.5rem;
   color: #333;
   font-size: 1.5rem;
+  border-bottom: 1px solid #eee;
 }
 
 .controls p {
   color: #666;
   font-size: 0.9rem;
+}
+
+.modelPath {
+  padding: 0.5rem 2rem 1rem;
+  color: #888;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #eee;
+  margin: 0;
+}
+
+.loading {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 1.2rem;
 }

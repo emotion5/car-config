@@ -1,7 +1,14 @@
 import { OrbitControls } from '@react-three/drei'
 import ModelViewer from './ModelViewer'
+import * as THREE from 'three'
 
-function Scene() {
+interface SceneProps {
+  modelPath: string
+  modelScale: number
+  onMaterialsFound: (materials: Record<string, THREE.Material>) => void
+}
+
+function Scene({ modelPath, modelScale, onMaterialsFound }: SceneProps) {
   return (
     <>
       {/* 조명 설정 */}
@@ -22,7 +29,11 @@ function Scene() {
       />
       
       {/* 3D 모델 */}
-      <ModelViewer />
+      <ModelViewer 
+        modelPath={modelPath}
+        modelScale={modelScale}
+        onMaterialsFound={onMaterialsFound}
+      />
       
       {/* 바닥 그리드 (선택사항) */}
       <gridHelper args={[10, 10]} />
