@@ -1,0 +1,30 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.canvasWrapper {
+  flex: 1;
+  position: relative;
+}
+
+.controls {
+  width: 300px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.controls h2 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.controls p {
+  color: #666;
+  font-size: 0.9rem;
+}
