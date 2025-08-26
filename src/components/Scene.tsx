@@ -1,4 +1,4 @@
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, Environment } from '@react-three/drei'
 import ModelViewer from './ModelViewer'
 import * as THREE from 'three'
 
@@ -11,12 +11,22 @@ interface SceneProps {
 function Scene({ modelPath, modelScale, onMaterialsFound }: SceneProps) {
   return (
     <>
-      {/* 조명 설정 */}
-      <ambientLight intensity={0.5} />
+      {/* PBR을 위한 환경맵 - metalness/roughness 효과 극대화 */}
+      <Environment 
+        preset="studio" 
+        background={false}
+        environmentIntensity={0.4}
+      />
+      
+      {/* 조명 설정 - PBR 최적화 */}
+      <ambientLight intensity={0.2} />
       <directionalLight 
         position={[10, 10, 5]} 
-        intensity={1} 
-        castShadow 
+        intensity={1.2} 
+      />
+      <directionalLight 
+        position={[-5, 5, -5]} 
+        intensity={0.6} 
       />
       
       {/* 카메라 컨트롤 - 마우스로 회전/줌 가능 */}

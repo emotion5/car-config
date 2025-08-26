@@ -16,7 +16,15 @@ function MaterialList({ materials }: MaterialListProps) {
     // Three.js 머티리얼 색상 변경
     const material = materials[materialName]
     if (material && 'color' in material) {
-      (material as any).color = new THREE.Color(color)
+      const mat = material as any
+      mat.color = new THREE.Color(color)
+      mat.needsUpdate = true  // 머티리얼 새로고침 강제
+      
+      // 투명도가 있는 머티리얼은 특별 처리
+      if (mat.transparent && mat.opacity < 1) {
+        mat.transparent = true
+        mat.needsUpdate = true
+      }
     }
   }
 

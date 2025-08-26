@@ -20,10 +20,6 @@ function ModelViewer({ modelPath, modelScale, onMaterialsFound }: ModelViewerPro
       if (child instanceof THREE.Mesh) {
         const mesh = child as THREE.Mesh
         
-        // 그림자 설정
-        mesh.castShadow = true
-        mesh.receiveShadow = true
-        
         // 머티리얼 수집 (중복 제거)
         if (mesh.material) {
           if (Array.isArray(mesh.material)) {
@@ -39,7 +35,28 @@ function ModelViewer({ modelPath, modelScale, onMaterialsFound }: ModelViewerPro
       }
     })
     
-    console.log('Found materials:', Object.keys(materialsMap))
+    // 머티리얼 상세 속성 확인
+    Object.entries(materialsMap).forEach(([name, material]) => {
+      const mat = material as any
+      console.log(`Material "${name}":`, {
+        type: material.constructor.name,
+        color: mat.color ? `#${mat.color.getHexString()}` : 'none',
+        metalness: mat.metalness || 0,
+        roughness: mat.roughness || 0,
+        clearcoat: mat.clearcoat || 0,
+        clearcoatRoughness: mat.clearcoatRoughness || 0,
+        transparent: mat.transparent || false,
+        opacity: mat.opacity || 1,
+        emissive: mat.emissive ? `#${mat.emissive.getHexString()}` : 'none',
+        needsUpdate: mat.needsUpdate
+      })
+      
+      // 머티리얼 새로고침 강제 적용
+      if (mat.needsUpdate !== undefined) {
+        mat.needsUpdate = true
+      }
+    })
+    
     onMaterialsFound(materialsMap)
   }, [scene, onMaterialsFound])
 

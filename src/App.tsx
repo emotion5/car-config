@@ -39,7 +39,17 @@ function App() {
   return (
     <div className={styles.container}>
       <div className={styles.canvasWrapper}>
-        <Canvas camera={{ position: config.cameraPosition, fov: 50 }}>
+        <Canvas 
+          camera={{ position: config.cameraPosition, fov: 50 }}
+          gl={{ 
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance",
+            outputColorSpace: THREE.SRGBColorSpace,
+            toneMapping: THREE.ACESFilmicToneMapping,
+            toneMappingExposure: 1.0
+          }}
+        >
           <Suspense fallback={null}>
             <Scene 
               modelPath={config.modelPath}
