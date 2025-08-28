@@ -3,6 +3,8 @@ import { Suspense, useEffect, useState } from 'react'
 import * as THREE from 'three'
 import Scene from './components/Scene'
 import MaterialList from './components/MaterialList'
+import DownloadController from './components/DownloadController'
+import downloadIcon from './assets/icons/download.svg'
 import styles from './App.module.css'
 
 interface Config {
@@ -46,6 +48,11 @@ function App() {
 
   const currentModel = config.models[selectedModelIndex]
 
+  const handleDownload = () => {
+    // Canvas 내부의 DownloadController에 이벤트 전달
+    window.dispatchEvent(new CustomEvent('capture-3d-scene'))
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.canvasWrapper}>
@@ -57,7 +64,8 @@ function App() {
             powerPreference: "high-performance",
             outputColorSpace: THREE.SRGBColorSpace,
             toneMapping: THREE.ACESFilmicToneMapping,
-            toneMappingExposure: 1.0
+            toneMappingExposure: 1.0,
+            preserveDrawingBuffer: true // 이미지 캡처를 위해 필요
           }}
         >
           <Suspense fallback={null}>
@@ -66,8 +74,22 @@ function App() {
               modelScale={config.modelScale}
               onMaterialsFound={handleMaterialsFound}
             />
+            <DownloadController />
           </Suspense>
         </Canvas>
+        <button 
+          className={styles.downloadButton}
+          onClick={handleDownload}
+          title="이미지 다운로드"
+          aria-label="3D 모델 이미지 다운로드"
+        >
+          <img 
+            src={downloadIcon} 
+            alt="Download" 
+            width="24" 
+            height="24"
+          />
+        </button>
       </div>
       <div className={styles.logo}>
         <h1 className={styles.logoText}>Uable Configurator</h1>
