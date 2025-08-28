@@ -11,6 +11,7 @@ interface Config {
   models: { name: string, path: string }[]
   selectedModel: number
   modelScale: number
+  modelPosition: [number, number, number]
   cameraPosition: [number, number, number]
   backgroundColor: string
 }
@@ -73,6 +74,7 @@ function App() {
             <Scene 
               modelPath={currentModel.path}
               modelScale={config.modelScale}
+              modelPosition={config.modelPosition}
               onMaterialsFound={handleMaterialsFound}
             />
             <DownloadController />

@@ -6,6 +6,7 @@
   ],
   "selectedModel": 0,
   "modelScale": 1,
-  "cameraPosition": [5, 3, 5],
+  "modelPosition": [0, -0.5, 0],
+  "cameraPosition": [3, 2, 3],
   "backgroundColor": "#f0f0f0"
 }

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-이 파일은 Claude Code (claude.ai/code)가 이 저장소의 코드로 작업할 때 지침을 제공합니다.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## 프로젝트 개요
 
@@ -29,6 +29,7 @@ npm run preview
   - `models`: `name`과 `path` 속성을 가진 모델 객체 배열
   - `selectedModel`: 로드 시 표시할 기본 모델 인덱스
   - `modelScale`: 3D 모델의 스케일링 팩터
+  - `modelPosition`: 3D 모델의 위치 [x, y, z]
   - `cameraPosition`: 초기 카메라 위치 [x, y, z]
   - `backgroundColor`: UI 배경색 (현재 미사용)
 
@@ -108,6 +109,13 @@ gl.domElement.toBlob(callback, 'image/png', 1.0)
 - 스크롤 기능을 유지하면서 숨겨진 스크롤바
 - 모던한 타이포그래피를 위한 Inter 폰트 패밀리
 
+### 반응형 디자인
+- **데스크톱**: 사이드 패널 형태의 컨트롤
+- **모바일** (`max-width: 768px`): 수직 레이아웃으로 전환
+  - 상단: 3D 뷰어 (3:2 비율, 최대 45vh)
+  - 하단: 머티리얼 컨트롤 패널 (남은 공간 활용)
+  - 우측 여백 확보를 위한 특별한 레이아웃 처리
+
 ### UI 기능
 - **로고 표시**: 좌측 상단의 "Uable Configurator" 브랜딩
 - **모델 선택기**: 여러 모델 간 전환을 위한 드롭다운
@@ -141,7 +149,7 @@ public/
    ```json
    {"name": "모델 이름", "path": "/models/filename.glb"}
    ```
-3. 필요시 모든 모델에 대해 `modelScale`과 `cameraPosition` 조정
+3. 필요시 모든 모델에 대해 `modelScale`, `modelPosition`, `cameraPosition` 조정
 4. 애플리케이션이 GLB 파일의 모든 머티리얼을 자동으로 탐색
 
 ## 머티리얼 시스템
@@ -158,6 +166,25 @@ public/
 - 자동 타임스탬프 파일명 (형식: `3d-model-YYYY-MM-DD-HH-mm-ss.png`)
 - 현재 카메라 각도 및 머티리얼 설정 보존
 - 1.0 품질 설정으로 고품질 내보내기
+
+## 개발 환경
+
+### TypeScript 설정
+- **컴파일**: `tsc -b && vite build`로 타입 체크와 빌드 수행
+- **프로젝트 레퍼런스**: `tsconfig.app.json`, `tsconfig.node.json` 분리
+- **엄격한 타입 체크**: `@typescript-eslint/no-explicit-any` 규칙 적용
+
+### 알려진 이슈
+- **린팅 에러**: 일부 파일에서 `any` 타입 사용 (기능에는 영향 없음)
+  - `DownloadController.tsx`: 2곳
+  - `MaterialList.tsx`: 2곳  
+  - `ModelViewer.tsx`: 1곳
+- **번들 크기**: Three.js로 인해 1.2MB (정상 범위)
+
+### Vite 설정
+- **개발 서버**: Hot Module Replacement (HMR) 지원
+- **React Plugin**: `@vitejs/plugin-react` 사용
+- **빌드**: 프로덕션 최적화된 번들 생성
 
 ## Git 커밋 정책
 

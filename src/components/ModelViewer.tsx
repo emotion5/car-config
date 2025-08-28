@@ -5,10 +5,11 @@ import * as THREE from 'three'
 interface ModelViewerProps {
   modelPath: string
   modelScale: number
+  modelPosition: [number, number, number]
   onMaterialsFound: (materials: Record<string, THREE.Material>) => void
 }
 
-function ModelViewer({ modelPath, modelScale, onMaterialsFound }: ModelViewerProps) {
+function ModelViewer({ modelPath, modelScale, modelPosition, onMaterialsFound }: ModelViewerProps) {
   const { scene } = useGLTF(modelPath)
   const modelRef = useRef<THREE.Group>(null)
 
@@ -65,7 +66,7 @@ function ModelViewer({ modelPath, modelScale, onMaterialsFound }: ModelViewerPro
       <primitive 
         object={scene} 
         scale={[modelScale, modelScale, modelScale]}
-        position={[0, 0, 0]}
+        position={modelPosition}
         rotation={[0, 0, 0]}
       />
     </group>

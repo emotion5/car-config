@@ -5,6 +5,7 @@ import * as THREE from 'three'
 interface SceneProps {
   modelPath: string
   modelScale: number
+  modelPosition: [number, number, number]
   onMaterialsFound: (materials: Record<string, THREE.Material>) => void
 }
 
@@ -30,7 +31,7 @@ function GroundPlane() {
   )
 }
 
-function Scene({ modelPath, modelScale, onMaterialsFound }: SceneProps) {
+function Scene({ modelPath, modelScale, modelPosition, onMaterialsFound }: SceneProps) {
   return (
     <>
       {/* PBR을 위한 환경맵 - metalness/roughness 효과 극대화 */}
@@ -67,6 +68,7 @@ function Scene({ modelPath, modelScale, onMaterialsFound }: SceneProps) {
       <ModelViewer 
         modelPath={modelPath}
         modelScale={modelScale}
+        modelPosition={modelPosition}
         onMaterialsFound={onMaterialsFound}
       />
       
