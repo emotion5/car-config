@@ -67,6 +67,7 @@ function App() {
             toneMappingExposure: 1.0,
             preserveDrawingBuffer: true // 이미지 캡처를 위해 필요
           }}
+          resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
         >
           <Suspense fallback={null}>
             <Scene 

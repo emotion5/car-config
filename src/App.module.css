@@ -9,6 +9,8 @@
   width: 100vw;
   height: 100vh;
   position: relative;
+  display: flex;
+  flex-direction: row;
   /* 스튜디오 스타일 그라데이션 배경 - 어두운 톤 */
   background: linear-gradient(180deg, 
     #000000 0%,     /* 상단: 검정색 */
@@ -24,6 +26,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  flex: 1;
 }
 
 .downloadButton {
@@ -162,13 +165,67 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .canvasWrapper {
+    position: relative;
+    width: 100vw;
+    height: 60vh; /* 상단 60%만 차지 */
+    flex-shrink: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .controls {
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 40vh; /* 하단 40% 차지 */
+    max-height: none;
+    background: rgba(20, 20, 20, 0.95);
+    border-radius: 0;
+    overflow-y: auto;
+    margin: 0;
+    padding: 1rem;
+  }
+  
+  .downloadButton {
+    top: 10px;
+    right: 10px;
+    width: 48px;
+    height: 48px;
+    z-index: 1000;
+  }
+  
+  .downloadButton img {
+    width: 20px;
+    height: 20px;
+  }
+  
   .logo {
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
   }
   
   .logoText {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+  }
+  
+  .contactButton {
+    margin-top: 1rem;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  .modelSelector {
+    padding: 1rem;
   }
 }
 
