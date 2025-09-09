@@ -1,4 +1,4 @@
-import { OrbitControls, Environment, useTexture } from '@react-three/drei'
+import { OrbitControls, Environment } from '@react-three/drei'
 import ModelViewer from './ModelViewer'
 import * as THREE from 'three'
 
@@ -10,22 +10,15 @@ interface SceneProps {
 }
 
 function GroundPlane() {
-  const soilTexture = useTexture('/textures/soil.png')
-  
-  // 텍스처 설정
-  soilTexture.wrapS = soilTexture.wrapT = THREE.RepeatWrapping
-  soilTexture.repeat.set(8, 8) // 8x8 반복
-  
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
       <circleGeometry args={[30, 64]} />
       <meshStandardMaterial
-        map={soilTexture}
         transparent
-        opacity={0.05}  // 조금 더 진하게
+        opacity={0.05}
         roughness={0.8}
         metalness={0}
-        color="#808080"  // 회색 틴트로 더 어둡게
+        color="#808080"
       />
     </mesh>
   )
