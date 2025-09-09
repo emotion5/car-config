@@ -237,10 +237,10 @@
   .controls {
     position: relative;
     top: 0;
-    right: 1rem; /* 우측에서 1rem 떨어뜨림 */
+    right: 0; /* 우측 여백 제거 */
     left: 0;
     bottom: 0;
-    width: calc(100% - 1rem); /* 너비를 1rem만큼 줄임 */
+    width: 100%; /* 전체 너비 사용 */
     flex: 1; /* 남은 공간 모두 사용 */
     min-height: 0; /* flex item이 내용에 맞게 축소 가능 */
     background: rgba(20, 20, 20, 0.95);
@@ -249,6 +249,15 @@
     margin: 0;
     padding: 1rem;
     box-sizing: border-box; /* 패딩 포함한 박스 사이징 */
+    /* 모바일에서 스크롤바 숨기기 */
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  
+  .controls::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
   
   .downloadButton {
