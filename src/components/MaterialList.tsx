@@ -4,9 +4,10 @@ import styles from './MaterialList.module.css'
 
 interface MaterialListProps {
   materials: Record<string, THREE.Material>
+  isLightMode: boolean
 }
 
-function MaterialList({ materials }: MaterialListProps) {
+function MaterialList({ materials, isLightMode }: MaterialListProps) {
   const [colors, setColors] = useState<Record<string, string>>({})
 
   const handleColorChange = (materialName: string, color: string) => {
@@ -37,7 +38,7 @@ function MaterialList({ materials }: MaterialListProps) {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isLightMode ? styles.lightMode : ''}`}>
       <h3 className={styles.title}>머티리얼 목록</h3>
       <div className={styles.materialsList}>
         {Object.entries(materials).map(([name, material]) => {

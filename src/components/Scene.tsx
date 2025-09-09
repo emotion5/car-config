@@ -7,38 +7,42 @@ interface SceneProps {
   modelScale: number
   modelPosition: [number, number, number]
   onMaterialsFound: (materials: Record<string, THREE.Material>) => void
+  isLightMode: boolean
 }
 
-function GroundPlane() {
-  return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
-      <circleGeometry args={[30, 64]} />
-      <meshStandardMaterial
-        transparent
-        opacity={0.05}
-        roughness={0.8}
-        metalness={0}
-        color="#808080"
-      />
-    </mesh>
-  )
-}
+// function GroundPlane({ isLightMode }: { isLightMode: boolean }) {
+//   return (
+//     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+//       <circleGeometry args={[30, 64]} />
+//       <meshStandardMaterial
+//         transparent
+//         opacity={isLightMode ? 0.3 : 0.2}
+//         roughness={0.1}
+//         metalness={0.8}
+//         color={isLightMode ? "#808080" : "#404040"}
+//       />
+//     </mesh>
+//   )
+// }
 
-function Scene({ modelPath, modelScale, modelPosition, onMaterialsFound }: SceneProps) {
+function Scene({ modelPath, modelScale, modelPosition, onMaterialsFound, isLightMode }: SceneProps) {
   return (
     <>
       {/* PBR을 위한 환경맵 - metalness/roughness 효과 극대화 */}
       <Environment 
-        preset="studio" 
+        preset="city" 
         background={false}
-        environmentIntensity={0.4}
+        environmentIntensity={0.6}
       />
+      
+      {/* 라이트 모드일 때 배경색 설정 */}
+      {isLightMode && <color attach="background" args={['#dddddd']} />}
       
       {/* 조명 설정 - PBR 최적화 */}
       <ambientLight intensity={0.2} />
       <directionalLight 
         position={[10, 10, 5]} 
-        intensity={1.2} 
+        intensity={0.8} 
       />
       <directionalLight 
         position={[-5, 5, -5]} 
@@ -54,8 +58,8 @@ function Scene({ modelPath, modelScale, modelPosition, onMaterialsFound }: Scene
         maxDistance={20}
       />
       
-      {/* 바닥 텍스처 */}
-      <GroundPlane />
+      {/* 바닥 텍스처 - 제거됨 */}
+      {/* <GroundPlane isLightMode={isLightMode} /> */}
       
       {/* 3D 모델 */}
       <ModelViewer 

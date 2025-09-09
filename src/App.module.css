@@ -18,6 +18,7 @@
     #1a1a1a 70%,    /* 하단: 어두운 회색 */
     #252525 100%    /* 최하단: 약간 밝은 어두운 회색 */
   );
+  transition: background 0.5s ease;
 }
 
 .canvasWrapper {
@@ -27,6 +28,10 @@
   width: 100%;
   height: 100%;
   flex: 1;
+}
+
+.lightMode .canvasWrapper {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .downloadButton {
@@ -48,9 +53,50 @@
   z-index: 100;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
               0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  outline: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-.downloadButton:hover {
+.downloadButton:focus {
+  outline: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.themeButton {
+  position: absolute;
+  top: 20px;
+  right: 484px;
+  width: 56px;
+  height: 56px;
+  border-radius: 0;
+  background: rgba(17, 17, 17, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  font-size: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  outline: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.themeButton:focus {
+  outline: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.downloadButton:hover,
+.themeButton:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
@@ -58,7 +104,8 @@
               0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-.downloadButton:active {
+.downloadButton:active,
+.themeButton:active {
   transform: translateY(0);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
               0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -77,8 +124,15 @@
 }
 
 .downloadButton:hover img,
-.downloadButton:hover svg {
+.downloadButton:hover svg,
+.themeButton:hover img {
   transform: scale(1.1);
+}
+
+.themeButton img {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
 }
 
 .controls {
@@ -158,9 +212,9 @@
 .logoText {
   margin: 0;
   color: #565656;
-  font-family: 'Alfa Slab One', serif;
-  font-size: 1.8rem;
-  font-weight: 400;
+  font-family: 'Inter Medium', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  font-weight: 100;
   text-shadow: 0 2px 4px rgba(86, 86, 86, 0.5);
 }
 
@@ -202,6 +256,15 @@
     right: 10px;
     width: 48px;
     height: 48px;
+    z-index: 1000;
+  }
+  
+  .themeButton {
+    top: 10px;
+    right: 68px;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
     z-index: 1000;
   }
   
@@ -262,4 +325,61 @@
 .modelSelect option {
   background: #2a2a2a;
   color: #ffffff;
+}
+
+/* 라이트 모드에서 버튼들 스타일 조정 */
+.lightMode .downloadButton,
+.lightMode .themeButton {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.lightMode .downloadButton:hover,
+.lightMode .themeButton:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* 라이트 모드에서 컨트롤 패널 스타일 조정 */
+.lightMode .controls {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.lightMode .controls h2 {
+  color: #333333;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.lightMode .controls p {
+  color: #555555;
+}
+
+.lightMode .selectorLabel {
+  color: #333333;
+}
+
+.lightMode .modelSelect {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: #333333;
+}
+
+.lightMode .modelSelect:focus {
+  border-color: rgba(0, 0, 0, 0.4);
+}
+
+.lightMode .modelSelect option {
+  background: #ffffff;
+  color: #333333;
+}
+
+.lightMode .contactButton {
+  background: #ff4444;
+  color: white;
+}
+
+.lightMode .contactButton:hover {
+  background: #ff6666;
 }
